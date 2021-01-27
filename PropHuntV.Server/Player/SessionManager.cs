@@ -10,10 +10,10 @@ namespace PropHuntV.Server.Player
 {
 	public class SessionManager : ServerAccessor
 	{
-		private readonly List<Session> _sessions = new List<Session>();
+		private List<Session> _sessions = new List<Session>();
 
 		/// <summary>
-		/// A thread-safe, readonly collection of the current active Sessions.
+		/// A thread-safe, collection of the current active Sessions.
 		/// </summary>
 		public IReadOnlyList<Session> SessionList => new List<Session>( _sessions );
 

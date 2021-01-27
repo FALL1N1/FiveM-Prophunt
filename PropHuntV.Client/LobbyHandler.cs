@@ -161,6 +161,14 @@ namespace PropHuntV.Client
 				return;
 
 			var model = new Model( hash );
+
+			// If the selected model is not found or fails (e.g corrupted conf)
+			// set it to the default one.
+			if( !await model.Request( 30000 ) || !await model.Request( 30000 ) ) {
+				hash = PedHash.JoeMinuteman;
+				model = new Model( hash );
+			}
+
 			var modelName = $"0x{(uint)hash:X} (PedHash.{Enum.GetName( typeof( PedHash ), hash ) ?? "Unknown"})";
 
 			// Sometimes the model won't load correctly unless requested twice

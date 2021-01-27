@@ -6,9 +6,9 @@ namespace PropHuntV.Client.Util
 {
 	public class Area
 	{
-		public readonly float[][] Polygon;
-		public readonly float MinZ;
-		public readonly float MaxZ;
+		public float[][] Polygon;
+		public float MinZ;
+		public float MaxZ;
 
 		public Area( float[][] polygon, float minZ, float maxZ ) {
 			Polygon = polygon;

@@ -14,7 +14,7 @@ namespace PropHuntV.Server
 	{
 		private Random Random { get; } = new Random();
 
-		private readonly List<MapModel> _mapRotation = new List<MapModel>();
+		private List<MapModel> _mapRotation = new List<MapModel>();
 
 		public ServerConfigModel Config { get; private set; }
 		public GameDataModel GameState { get; private set; }

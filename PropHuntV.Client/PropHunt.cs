@@ -16,11 +16,11 @@ namespace PropHuntV.Client
 		private const int DefaultHealthValue = 50;
 		private const float IntegrityDistanceThreshold = 8f; // The max distance in meters a player can move in a second.
 
-		internal static readonly Vector3 SpawnPosition = new Vector3( 232.377f, -986.48f, -100f );
-		internal static readonly Vector3 WaitAreaPosition = new Vector3( 197.5932f, -935.3035f, 30.68681f );
-		internal static readonly Vector4 SpawnLocation = new Vector4( SpawnPosition, 57.199f );
+		internal static Vector3 SpawnPosition = new Vector3( 232.377f, -986.48f, -100f );
+		internal static Vector3 WaitAreaPosition = new Vector3( 197.5932f, -935.3035f, 30.68681f );
+		internal static Vector4 SpawnLocation = new Vector4( SpawnPosition, 57.199f );
 
-		private static readonly Dictionary<string, int> ModelSelectors = new Dictionary<string, int> {
+		private static Dictionary<string, int> ModelSelectors = new Dictionary<string, int> {
 			["_chr"] = 60,
 			["chair"] = 60,
 			["table"] = 100,
@@ -31,7 +31,7 @@ namespace PropHuntV.Client
 			["streetlight"] = 80
 		};
 
-		private static readonly Dictionary<string, Vector3> ModelOffsets = new Dictionary<string, Vector3> {
+		private static Dictionary<string, Vector3> ModelOffsets = new Dictionary<string, Vector3> {
 			{"hei_prop_hei_bust_01", new Vector3(0f, 0f, 0.45f)},
 			{"prop_table_05", new Vector3(0f, 0f, 0.4f)},
 			{"prop_table_02", new Vector3(0f, 0f, 0.4f)},
@@ -71,7 +71,7 @@ namespace PropHuntV.Client
 		public bool DrawCrosshair { get; set; }
 
 		private DateTime _lastValidWipe = DateTime.MinValue;
-		private readonly Dictionary<int, uint> _propDict = new Dictionary<int, uint>();
+		private Dictionary<int, uint> _propDict = new Dictionary<int, uint>();
 
 		public PropHunt( Client client ) : base( client ) {
 			MapHandler = new MapHandler( this, client );

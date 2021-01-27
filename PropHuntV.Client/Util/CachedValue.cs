@@ -5,7 +5,7 @@ namespace PropHuntV.Util
 	public abstract class CachedValue<T>
 	{
 		private DateTime _lastUpdate = DateTime.MinValue;
-		private readonly long _timeoutInterval;
+		private long _timeoutInterval;
 
 		private T _cachedValue;
 

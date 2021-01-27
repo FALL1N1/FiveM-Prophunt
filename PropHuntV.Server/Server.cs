@@ -11,13 +11,13 @@ namespace PropHuntV.Server
 	{
 		public static Server ActiveInstance { get; private set; }
 
-		private readonly CachedConvar _requireSteam = new CachedConvar( "IsSteamRequired", "true", 5000 );
+		private CachedConvar _requireSteam = new CachedConvar( "IsSteamRequired", "true", 5000 );
 		/// <summary>
 		/// Whether or not Steam is required to join the server.
 		/// </summary>
 		public bool IsSteamRequired => _requireSteam.Value.ToLower() == "true" || _requireSteam.Value == "1";
 
-		private readonly CachedConvar _maxPlayers = new CachedConvar( "maxPlayers", "32", 2500 );
+		private CachedConvar _maxPlayers = new CachedConvar( "maxPlayers", "32", 2500 );
 		/// <summary>
 		/// Gets the maximum amount of players defined with convar "maxPlayers".
 		/// </summary>

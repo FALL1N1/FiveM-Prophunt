@@ -10,7 +10,7 @@ namespace PropHuntV.Client.Game
 	public class WorldController : ClientAccessor
 	{
 
-		private static readonly Dictionary<CloudHatType, string> CloudHats = new Dictionary<CloudHatType, string> {
+		private static Dictionary<CloudHatType, string> CloudHats = new Dictionary<CloudHatType, string> {
 			[CloudHatType.Altostratus] = "altostratus",
 			[CloudHatType.Clear01] = "Clear 01",
 			[CloudHatType.Cloudy01] = "Cloudy 01",

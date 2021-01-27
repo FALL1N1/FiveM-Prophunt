@@ -10,7 +10,7 @@ namespace PropHuntV.Client.Game
 {
 	public class GameController : ClientAccessor
 	{
-		private readonly List<HudComponent> _hiddenComponents = new List<HudComponent>();
+		private List<HudComponent> _hiddenComponents = new List<HudComponent>();
 
 		public bool ShowRadar { get; set; } = true;
 

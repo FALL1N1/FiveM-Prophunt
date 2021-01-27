@@ -58,10 +58,10 @@ namespace PropHuntV.Server.Player
 		/// <summary>
 		/// The UTC timestamp of when this session was created.
 		/// </summary>
-		public readonly DateTime TimeJoined = DateTime.UtcNow;
+		public DateTime TimeJoined = DateTime.UtcNow;
 
-		protected internal readonly Dictionary<string, object> SharedData = new Dictionary<string, object>();
-		protected internal readonly Dictionary<string, object> ProtectedData = new Dictionary<string, object>();
+		protected internal Dictionary<string, object> SharedData = new Dictionary<string, object>();
+		protected internal Dictionary<string, object> ProtectedData = new Dictionary<string, object>();
 
 		public Session( CitizenFX.Core.Player player, Dictionary<string, object> sharedData = null, Dictionary<string, object> protectedData = null ) {
 			Player = player;

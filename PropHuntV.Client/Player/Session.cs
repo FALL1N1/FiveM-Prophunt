@@ -22,14 +22,14 @@ namespace PropHuntV.Client.Player
 		/// </summary>
 		public string Name { get; protected internal set; }
 
-		private readonly Dictionary<string, object> _protectedData = new Dictionary<string, object>();
-		private readonly Dictionary<string, object> _sharedData = new Dictionary<string, object>();
+		private Dictionary<string, object> _protectedData = new Dictionary<string, object>();
+		private Dictionary<string, object> _sharedData = new Dictionary<string, object>();
 
 		/// <summary>
 		/// The time the session was created in UTC. Not accurate to the exact time they connected as this is dependent
 		/// on the time it takes for them to load in.
 		/// </summary>
-		public readonly DateTime JoinTime = DateTime.UtcNow;
+		public DateTime JoinTime = DateTime.UtcNow;
 
 		public Session( int netId, SessionDataModel model ) {
 			NetId = netId;
