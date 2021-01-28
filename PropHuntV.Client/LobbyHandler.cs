@@ -189,8 +189,10 @@ namespace PropHuntV.Client
 				Client.TriggerNuiEvent( "Lobby.UserData", user );
 				Client.TriggerNuiEvent( "Lobby.Config", PropHunt.Config );
 
-				var pedHash = Enum.GetValues( typeof( PedHash ) ).OfType<PedHash>()
-					.FirstOrDefault( p => Enum.GetName( typeof( PedHash ), p )?.Equals( user.PedModel ) ?? false );
+				//var pedHash = Enum.GetValues( typeof( PedHash ) ).OfType<PedHash>().FirstOrDefault( p => Enum.GetName( typeof( PedHash ), p )?.Equals( user.PedModel ) ?? false );
+
+				var pedHash = PedHash.JoeMinuteman;
+
 				await SetPedModel( pedHash );
 			}
 			catch( Exception ex ) {
