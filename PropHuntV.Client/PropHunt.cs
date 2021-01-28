@@ -8,6 +8,7 @@ using CitizenFX.Core.UI;
 using Newtonsoft.Json;
 using PropHuntV.SharedModels;
 using PropHuntV.Util;
+using static PropHuntV.Client.LobbyHandler;
 
 namespace PropHuntV.Client
 {
@@ -175,6 +176,23 @@ namespace PropHuntV.Client
 			try {
 				if( DrawCrosshair )
 					Screen.Hud.ShowComponentThisFrame( HudComponent.Reticle );
+
+				//if( MapHandler.CurrentPlayer?.Team == Team.Prop ) // We want only the props to taunt
+				//{
+					if( CitizenFX.Core.Game.IsControlJustReleased( 0, Control.Reload ) ) { // should be 45 (Control.Reload)
+						var pPlayer = CitizenFX.Core.Game.Player;
+						int networkId = pPlayer.Character.NetworkId;
+						Log.Info( "Player " + networkId + " used taunt [R]" );
+
+
+						Log.Info( "Player's POS: X:" + pPlayer.Character.Position.X + ", Y:"+ pPlayer.Character.Position.X+", Z:"+ pPlayer.Character.Position.X+" used taunt [R]" );
+
+						BaseScript.TriggerServerEvent( "Server:SoundToCoords", pPlayer.Character.Position.X, pPlayer.Character.Position.Y, pPlayer.Character.Position.Z, 0.02f, "example", 0.02f );
+					
+						// work
+						//BaseScript.TriggerServerEvent( "Server:SoundToRadius", networkId, 3.0f, "example", 0.015f );
+					}
+				//}
 
 				if( Client.Player.PlayerPed.IsDead || Client.Player.PlayerPed.Health <= 0 ) {
 					if( MapHandler.IsPlaying() ) {
