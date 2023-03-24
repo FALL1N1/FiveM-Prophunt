@@ -44,7 +44,7 @@ namespace PropHuntV.Server.Player
 			try {
 				var session = FromIdentifiers( player.Identifiers );
 				if( session == null ) {
-					Log.Warn( $"No player found with identifiers ({string.Join( ", ", player.Identifiers )}) from dropped session." );
+					Log.Info( $"No player found with identifiers ({string.Join( ", ", player.Identifiers )}) from dropped session." );
 					return;
 				}
 
@@ -62,7 +62,7 @@ namespace PropHuntV.Server.Player
 			try {
 				var session = FromIdentifiers( player.Identifiers );
 				if( session == null ) {
-					Log.Warn( $"Could not find pre-existing session from {player.Name} (net:{player.Handle}, {string.Join( ", ", player.Identifiers )}). Creating new." );
+					Log.Info( $"Could not find pre-existing session from {player.Name} (net:{player.Handle}, {string.Join( ", ", player.Identifiers )}). Creating new." );
 					session = new Session( player );
 					_sessions.Add( session );
 				}
@@ -70,7 +70,7 @@ namespace PropHuntV.Server.Player
 					session.Player = player;
 				}
 
-				foreach( var p in new PlayerList() ) {
+				foreach( var p in Server.PlayersAvailable ) {
 					var data = new SessionDataModel {
 						Name = session.Name,
 						NetId = session.NetId,
@@ -89,7 +89,7 @@ namespace PropHuntV.Server.Player
 				player.TriggerEvent( "Session.Loaded" );
 				BaseScript.TriggerEvent( "Session.Loaded", session.NetId );
 
-				Log.Verbose( $"Player {session.Name} (net:{session.NetId}) has loaded into the server." );
+				Log.Info( $"Player {session.Name} (net:{session.NetId}) has loaded into the server." );
 			}
 			catch( Exception ex ) {
 				Log.Error( ex );

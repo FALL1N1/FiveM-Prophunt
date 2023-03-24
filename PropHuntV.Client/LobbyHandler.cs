@@ -67,7 +67,7 @@ namespace PropHuntV.Client
 
 		public void UpdatePlayerCount( int count = -1 ) {
 			if( count == -1 )
-				count = new PlayerList().Count();
+				count = Client.PlayersAvailable.Count();
 			Client.TriggerNuiEvent( "Lobby.PlayerCount", new Dictionary<string, int> {
 				{"PlayerCount", count}
 			} );
@@ -91,7 +91,7 @@ namespace PropHuntV.Client
 			try {
 				var winners = (Team)team;
 				PropHunt.Spectate.IsEnabled = false;
-				foreach( var player in new PlayerList() ) {
+				foreach( var player in Client.PlayersAvailable ) {
 					player.Character.IsVisible = true;
 				}
 				await ToggleLobby( true );
@@ -157,9 +157,10 @@ namespace PropHuntV.Client
 		}
 
 		internal async Task SetPedModel( PedHash hash ) {
+			Log.Info( "MODEL: " + hash );
 			if( Client.Player.PlayerPed.Model.Hash == (int)hash )
 				return;
-
+			Log.Info( "OK MODEL -> : " + hash );
 			var model = new Model( hash );
 
 			// If the selected model is not found or fails (e.g corrupted conf)
@@ -169,11 +170,11 @@ namespace PropHuntV.Client
 				model = new Model( hash );
 			}
 
-			var modelName = $"0x{(uint)hash:X} (PedHash.{Enum.GetName( typeof( PedHash ), hash ) ?? "Unknown"})";
+			String modelName = $"0x{(uint)hash:X} (PedHash.{Enum.GetName( typeof( PedHash ), hash ) ?? "Unknown"})";
 
 			// Sometimes the model won't load correctly unless requested twice
 			if( !await model.Request( 30000 ) || !await model.Request( 30000 ) || !await CitizenFX.Core.Game.Player.ChangeModel( model ) ) {
-				Log.Warn( $"Failed to load ped model {modelName}" );
+				Log.Info( $"Failed to load ped model {modelName}" );
 			}
 			else {
 				Log.Info( $"Loaded model {modelName}" );

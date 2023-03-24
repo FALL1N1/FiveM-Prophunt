@@ -22,7 +22,7 @@ namespace PropHuntV.Server
 		public HashSet<int> ReadyPlayers { get; } = new HashSet<int>();
 
 		protected internal PropHunt( Server server ) : base( server ) {
-			Log.Verbose( "Loading Configuration file" );
+			Log.Info( "Loading Configuration file" );
 
 			if( !LoadConfig() ) {
 				API.StopResource( API.GetCurrentResourceName() );
@@ -100,7 +100,7 @@ namespace PropHuntV.Server
 				var session = Server.Sessions.FromPlayer( source );
 				if( session == null || ReadyPlayers.Contains( session.NetId ) ) return;
 				ReadyPlayers.Add( session.NetId );
-				Log.Verbose( $"Player {session.Name} is ready." );
+				Log.Info( $"Player {session.Name} is ready." );
 				source.TriggerEvent( "UI.ShowNotification", "You have been marked as ~g~Ready~s~.~n~Currently waiting for more ready players." );
 			}
 			catch( Exception ex ) {
@@ -219,19 +219,19 @@ namespace PropHuntV.Server
 				var target = Config.Characters.FirstOrDefault( c => c.ModelName.Equals( model, StringComparison.InvariantCultureIgnoreCase ) );
 
 				if( target == null ) {
-					Log.Warn( $"Player {session.Name} (net:{session.NetId}) tried purchasing an invalid model: {model}" );
+					Log.Info( $"Player {session.Name} (net:{session.NetId}) tried purchasing an invalid model: {model}" );
 					return;
 				}
 
 				if( !target.Unlocked && !user.Unlockables.Contains( target.ModelName ) ) {
-					Log.Warn( $"Player {session.Name} (net:{session.NetId}) tried switching to a model they don't own: {model}" );
+					Log.Info( $"Player {session.Name} (net:{session.NetId}) tried switching to a model they don't own: {model}" );
 					return;
 				}
 
 				user.PedModel = target.ModelName;
 				if( await session.SaveData() ) {
 					session.TriggerEvent( "PropHunt.UserData", JsonConvert.SerializeObject( user ) );
-					Log.Verbose( $"Player {session.Name} switched to model {model}" );
+					Log.Info( $"Player {session.Name} switched to model {model}" );
 				}
 			}
 			catch( Exception ex ) {
@@ -248,12 +248,12 @@ namespace PropHuntV.Server
 				var target = Config.Characters.FirstOrDefault( c => c.ModelName.Equals( item, StringComparison.InvariantCultureIgnoreCase ) );
 
 				if( target == null ) {
-					Log.Warn( $"Player {session.Name} (net:{session.NetId}) tried purchasing an invalid item: {item}" );
+					Log.Info( $"Player {session.Name} (net:{session.NetId}) tried purchasing an invalid item: {item}" );
 					return;
 				}
 
 				if( target.PointCost > user.Points ) {
-					Log.Warn( $"Player {session.Name} (net:{session.NetId}) tried purchasing {item} ({target.PointCost}p) with only {user.Points} points." );
+					Log.Info( $"Player {session.Name} (net:{session.NetId}) tried purchasing {item} ({target.PointCost}p) with only {user.Points} points." );
 					return;
 				}
 
@@ -266,7 +266,7 @@ namespace PropHuntV.Server
 				if( await session.SaveData() ) {
 					session.TriggerEvent( "PropHunt.UserData", JsonConvert.SerializeObject( user ) );
 					session.TriggerEvent( "PropHunt.Sound", "purchase" );
-					Log.Verbose(
+					Log.Info(
 						$"Player {session.Name} purchased {target.ModelName} for {target.PointCost:n0}. Balance: {user.Points:n0}" );
 				}
 			}
@@ -303,7 +303,7 @@ namespace PropHuntV.Server
 				if( session == null ) return;
 
 				if( !await session.LoadData() ) {
-					Log.Warn( $"Could not load {session.Player.Name}'s data" );
+					Log.Info( $"Could not load {session.Player.Name}'s data" );
 					session.Drop( "Error loading user data -- Contact Server Owner." );
 					return;
 				}
@@ -343,7 +343,7 @@ namespace PropHuntV.Server
 				Players = new List<PlayerDataModel>()
 			};
 			BaseScript.TriggerClientEvent( "PropHunt.GameState", JsonConvert.SerializeObject( GameState ) );
-			Log.Verbose( $"Map changed to {model.Name}." );
+			Log.Info( $"Map changed to {model.Name}." );
 		}
 	}
 }

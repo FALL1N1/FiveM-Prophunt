@@ -55,7 +55,7 @@ namespace PropHuntV.Client
 
 				var map = CurrentMap;
 				if( map == null ) {
-					Log.Warn( "Map is null when it shouldn't be" );
+					Log.Info( "Map is null when it shouldn't be" );
 					return;
 				}
 				Client.Time.Hour = map.Hour;

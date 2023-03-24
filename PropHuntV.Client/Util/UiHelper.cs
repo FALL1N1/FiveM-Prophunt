@@ -12,7 +12,7 @@ namespace PropHuntV.Util
 		public static Color DefaultColor = Color.FromArgb( 255, 255, 255 );
 
 		public static void DrawText( string text, Vector2 pos, Color? color = null, float scale = 0.25f,
-			bool shadow = false, float shadowOffset = 1f, Alignment alignment = Alignment.Left, Font font = Font.ChaletLondon ) {
+			bool shadow = false, float shadowOffset = 1f, Alignment alignment = Alignment.Left, CitizenFX.Core.UI.Font font = CitizenFX.Core.UI.Font.ChaletLondon ) {
 			try {
 				Function.Call( Hash.SET_TEXT_FONT, font );
 				Function.Call( Hash.SET_TEXT_PROPORTIONAL, 0 );
@@ -49,7 +49,7 @@ namespace PropHuntV.Util
 		}
 
 		public static void Draw3DText( string text, Vector3 position, Color color, float scale = 1f,
-			Font font = Font.ChaletLondon, bool center = true ) {
+			CitizenFX.Core.UI.Font font = CitizenFX.Core.UI.Font.ChaletLondon, bool center = true ) {
 			var pos = WorldToScreen( position );
 			var cam = API.GetGameplayCamCoords();
 			var dist = Math.Max( 0.0001f, Math.Sqrt( cam.DistanceToSquared( position ) ) );

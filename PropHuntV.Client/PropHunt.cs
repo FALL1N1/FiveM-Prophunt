@@ -111,7 +111,7 @@ namespace PropHuntV.Client
 				}
 
 				foreach( var kvp in new Dictionary<int, uint>( _propDict ) ) {
-					var player = new PlayerList().FirstOrDefault( p => p.ServerId == kvp.Key );
+					var player = Client.PlayersAvailable.FirstOrDefault( p => p.ServerId == kvp.Key );
 					if( player == null ) continue;
 
 					var playerPos = player.Character.Position;
@@ -187,7 +187,7 @@ namespace PropHuntV.Client
 
 						Log.Info( "Player's POS: X:" + pPlayer.Character.Position.X + ", Y:"+ pPlayer.Character.Position.X+", Z:"+ pPlayer.Character.Position.X+" used taunt [R]" );
 
-						BaseScript.TriggerServerEvent( "Server:SoundToCoords", pPlayer.Character.Position.X, pPlayer.Character.Position.Y, pPlayer.Character.Position.Z, 0.02f, "example", 0.02f );
+						BaseScript.TriggerServerEvent( "Server:SoundToCoords", pPlayer.Character.Position.X, pPlayer.Character.Position.Y, pPlayer.Character.Position.Z, 0.02f, "example.oga", 0.02f );
 					
 						// work
 						//BaseScript.TriggerServerEvent( "Server:SoundToRadius", networkId, 3.0f, "example", 0.015f );
@@ -197,7 +197,7 @@ namespace PropHuntV.Client
 				if( Client.Player.PlayerPed.IsDead || Client.Player.PlayerPed.Health <= 0 ) {
 					if( MapHandler.IsPlaying() ) {
 						var killer = Client.Player.PlayerPed.GetKiller();
-						BaseScript.TriggerServerEvent( "PropHunt.Dead", killer != null ? new PlayerList().FirstOrDefault( p => p.Character.Handle == killer.Handle )?.ServerId ?? -1 : -1 );
+						BaseScript.TriggerServerEvent( "PropHunt.Dead", killer != null ? Client.PlayersAvailable.FirstOrDefault( p => p.Character.Handle == killer.Handle )?.ServerId ?? -1 : -1 );
 						Spectate.IsEnabled = true;
 					}
 					ClearModel();
@@ -210,7 +210,7 @@ namespace PropHuntV.Client
 
 				CitizenFX.Core.Game.Player.SetMayNotEnterAnyVehicleThisFrame();
 
-				var playerList = new PlayerList();
+				var playerList = Client.PlayersAvailable;
 				var netId = CitizenFX.Core.Game.Player.ServerId;
 				foreach( var player in playerList ) {
 					if( player.ServerId == netId ) continue;
@@ -218,7 +218,7 @@ namespace PropHuntV.Client
 				}
 
 				if( MapHandler.CurrentPlayer == null || !MapHandler.GameState.IsHiding && !MapHandler.GameState.HasStarted ) {
-					foreach( var session in new PlayerList() ) {
+					foreach( var session in Client.PlayersAvailable ) {
 						if( session.ServerId == netId ) continue;
 						if( session.Character.Position.DistanceToSquared( SpawnPosition ) > 100f ) {
 							API.SetEntityLocallyVisible( session.Character.Handle );

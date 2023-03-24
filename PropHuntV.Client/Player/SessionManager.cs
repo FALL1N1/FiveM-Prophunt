@@ -87,7 +87,7 @@ namespace PropHuntV.Client.Player
 		private void OnSessionJoin( int netId, string data ) {
 			try {
 				var model = JsonConvert.DeserializeObject<SessionDataModel>( data );
-				Log.Warn( $"Model(netId): {data}" );
+				Log.Info( $"Model(netId): {data}" );
 				OnSessionJoinHandler( model );
 			}
 			catch( Exception ex ) {
@@ -96,14 +96,14 @@ namespace PropHuntV.Client.Player
 		}
 
 		private void OnSessionJoinHandler( SessionDataModel model ) {
-			var player = new PlayerList().FirstOrDefault( p => p.ServerId == model.NetId );
+			var player = Client.PlayersAvailable.FirstOrDefault( p => p.ServerId == model.NetId );
 			if( player == null ) {
 				Log.Error( $"Received Session Data for {model.NetId}, but no player found." );
 			}
 
 			var session = new Session( model.NetId, model );
-			Log.Warn( $"Model.NetId: {model.NetId} | {model.Name} | {model.SharedData} | {model.ProtectedData}" );
-			Log.Warn( $"_sessions: {_sessions != null}" );
+			Log.Info( $"Model.NetId: {model.NetId} | {model.Name} | {model.SharedData} | {model.ProtectedData}" );
+			Log.Info( $"_sessions: {_sessions != null}" );
 			_sessions.Add( session );
 		}
 

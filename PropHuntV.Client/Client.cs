@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using PropHuntV.Client.Game;
 using PropHuntV.Client.Player;
 using PropHuntV.SharedModels;
+using PropHuntV.Util;
 using static CitizenFX.Core.Native.API;
 
 // ReSharper disable once ClassNeverInstantiated.Global
@@ -24,10 +25,12 @@ namespace PropHuntV.Client
 		public TimeController Time { get; }
 		public SessionManager Sessions { get; }
 		public PropHunt PropHunt { get; }
+		public PlayerList PlayersAvailable { get; set; }
+		//public PlayerList Players { get;  }
 
 		public Client() {
 			if( ActiveInstance != null ) return; // Only instantiate once
-
+			 
 			Game = new GameController( this );
 			Player = new PlayerController( this );
 			World = new WorldController( this );
@@ -35,6 +38,7 @@ namespace PropHuntV.Client
 			Time = new TimeController( this );
 			Sessions = new SessionManager( this );
 			PropHunt = new PropHunt( this );
+			PlayersAvailable =  Players ; 
 
 			ActiveInstance = this;
 
@@ -59,21 +63,22 @@ namespace PropHuntV.Client
 			float distance = Vdist( playerCoords.X, playerCoords.Y, playerCoords.Z, targetCoords.X, targetCoords.Y, targetCoords.Z );
 			float distanceVolumeMultiplier = (soundVolume / soundRadius);
 			float distanceVolume = soundVolume - (distance * distanceVolumeMultiplier);
-			if( distance <= soundRadius ) {
+			//if( distance <= soundRadius ) {
 				SendNuiMessage( string.Format( "{{\"submissionType\":\"sendSound\", \"submissionVolume\":{0}, \"submissionFile\":\"{1}\"}}", (object)distanceVolume, (object)soundFile ) );
-			}
+			//}
 
 		}
 
 		private void SoundToCoords( float positionX, float positionY, float positionZ, float soundRadius, string soundFile, float soundVolume ) {
+			Log.Info( "SoundToCoords :: " + positionX + "f, " + positionY + "f, " + positionZ + "f, " + soundRadius + "f, " + "Sound: " + soundFile + ", Vol: " + soundVolume);
 			//Vector3 playerCoords = Game.Player.Character.Position;
 			Vector3 playerCoords = NetworkGetPlayerCoords( Player.PlayerPed.NetworkId );
 			float compare = Vdist( playerCoords.X, playerCoords.Y, playerCoords.Z, positionX, positionY, positionZ );
 			float distanceVolumeMultiplier = (soundVolume / soundRadius);
 			float distanceVolume = soundVolume - (compare * distanceVolumeMultiplier);
-			if( compare <= soundRadius ) {
+			//if( compare <= soundRadius ) {
 				SendNuiMessage( string.Format( "{{\"submissionType\":\"sendSound\", \"submissionVolume\":{0}, \"submissionFile\":\"{1}\"}}", (object)distanceVolume, (object)soundFile ) );
-			}
+			//}
 		}
 
 		public void RegisterEventHandler( string eventName, Delegate action ) {

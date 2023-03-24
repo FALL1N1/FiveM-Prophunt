@@ -84,7 +84,7 @@ namespace PropHuntV.Client
 
 			var next = order.FirstOrDefault( p => p.NetId > (_currentPlayer?.ServerId ?? -1) ) ?? order.FirstOrDefault();
 
-			var player = new PlayerList().FirstOrDefault( p => p.ServerId == (next?.NetId ?? -1024) );
+			var player = Client.PlayersAvailable.FirstOrDefault( p => p.ServerId == (next?.NetId ?? -1024) );
 			if( player != null ) {
 				Client.Player.PlayerPed.Detach();
 				Client.Player.PlayerPed.AttachTo( player.Character, new Vector3( 0f, 0f, -10f ) );

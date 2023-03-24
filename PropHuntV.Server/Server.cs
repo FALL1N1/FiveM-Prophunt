@@ -24,6 +24,8 @@ namespace PropHuntV.Server
 		public int MaxPlayers => int.TryParse( _maxPlayers.Value, out var o ) ? o : 32;
 
 		public SessionManager Sessions { get; }
+
+		public PlayerList PlayersAvailable { get; set; }
 		public PropHunt PropHunt { get; }
 
 		public Server() {
@@ -38,6 +40,7 @@ namespace PropHuntV.Server
 			EventHandlers["Server:SoundToCoords"] += new Action<float, float, float, float, string, float>( ServerSoundToCoords );
 
 			ActiveInstance = this;
+			PlayersAvailable = Players;
 		}
 
 		public void RegisterEventHandler( string eventName, Delegate action ) {
@@ -60,7 +63,7 @@ namespace PropHuntV.Server
 			return Exports[resourceName];
 		}
 		private void ServerSoundToClient( int netId, string soundFile, float soundVolume ) {
-			var plyr = new PlayerList()[netId];
+			var plyr = Players[netId];
 			plyr.TriggerEvent( "Client:SoundToClient", soundFile, soundVolume );
 		}
 
