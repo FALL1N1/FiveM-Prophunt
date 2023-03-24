@@ -88,6 +88,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /y /d "$(TargetPath)" "%25USERPROFILE%25\Documents\FiveM\FXServer-data\resources\prophunt\client\"</PostBuildEvent>
+    <PostBuildEvent>xcopy /y /d "$(TargetPath)" "..\..\..\prophunt"</PostBuildEvent>
   </PropertyGroup>
 </Project>
