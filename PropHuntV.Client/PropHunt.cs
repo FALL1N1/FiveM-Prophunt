@@ -6,9 +6,10 @@ using CitizenFX.Core;
 using CitizenFX.Core.Native;
 using CitizenFX.Core.UI;
 using Newtonsoft.Json;
+using PropHuntV.Client.Player;
 using PropHuntV.SharedModels;
 using PropHuntV.Util;
-using static PropHuntV.Client.LobbyHandler;
+using static PropHuntV.Client.LobbyHandler; 
 
 namespace PropHuntV.Client
 {
@@ -20,6 +21,9 @@ namespace PropHuntV.Client
 		internal static Vector3 SpawnPosition = new Vector3( 232.377f, -986.48f, -100f );
 		internal static Vector3 WaitAreaPosition = new Vector3( 197.5932f, -935.3035f, 30.68681f );
 		internal static Vector4 SpawnLocation = new Vector4( SpawnPosition, 57.199f );
+		 
+		private int cooldown_Time = 30;
+		private int lastused_Time = 0;
 
 		private static Dictionary<string, int> ModelSelectors = new Dictionary<string, int> {
 			["_chr"] = 60,
@@ -180,17 +184,23 @@ namespace PropHuntV.Client
 				//if( MapHandler.CurrentPlayer?.Team == Team.Prop ) // We want only the props to taunt
 				//{
 					if( CitizenFX.Core.Game.IsControlJustReleased( 0, Control.Reload ) ) { // should be 45 (Control.Reload)
-						var pPlayer = CitizenFX.Core.Game.Player;
-						int networkId = pPlayer.Character.NetworkId;
-						Log.Info( "Player " + networkId + " used taunt [R]" );
 
 
-						Log.Info( "Player's POS: X:" + pPlayer.Character.Position.X + ", Y:"+ pPlayer.Character.Position.X+", Z:"+ pPlayer.Character.Position.X+" used taunt [R]" );
+					TimeSpan t = (DateTime.UtcNow - new DateTime( 1970, 1, 1 ));
+					int cur_Time = (int)t.TotalSeconds;
 
-						BaseScript.TriggerServerEvent( "Server:PlaySound", pPlayer.Character.Position.X, pPlayer.Character.Position.Y, pPlayer.Character.Position.Z, 0.02f, "example.oga", 0.02f );
-					
-						// work
-						//BaseScript.TriggerServerEvent( "Server:SoundToRadius", networkId, 3.0f, "example", 0.015f );
+					if( lastused_Time  + cooldown_Time < cur_Time ) 
+						{
+							var pPlayer = CitizenFX.Core.Game.Player;
+							int networkId = pPlayer.Character.NetworkId;
+							Log.Info( "Player " + networkId + " used taunt [R]" );
+							BaseScript.TriggerServerEvent( "chHyperSound:play", -1, "aaah", false, pPlayer.Character.Position, 30.0 );
+							lastused_Time = cur_Time;
+						}
+						else 
+						{
+						Log.Info( "CD: " + ((lastused_Time + cooldown_Time) - cur_Time) * 1 );
+						}
 					}
 				//}
 
@@ -198,7 +208,6 @@ namespace PropHuntV.Client
 					if( MapHandler.IsPlaying() ) {
 						var killer = Client.Player.PlayerPed.GetKiller();
 						BaseScript.TriggerServerEvent( "PropHunt.Dead", killer != null ? Client.PlayersAvailable.FirstOrDefault( p => p.Character.Handle == killer.Handle )?.ServerId ?? -1 : -1 );
-						Log.Info( "[4] PropHunt.Spectate.IsEnabled = true" );
 						Spectate.IsEnabled = true;
 					}
 					ClearModel();
