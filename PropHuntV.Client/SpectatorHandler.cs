@@ -12,8 +12,8 @@ namespace PropHuntV.Client
 	{
 		protected PropHunt PropHunt { get; }
 
-		public bool IsEnabled
-		{
+		public bool IsEnabled = false;
+		/*{
 			get => _currentPlayer == null;
 			set {
 				Log.Info( $"Spectate mode set to {value}" );
@@ -31,7 +31,7 @@ namespace PropHuntV.Client
 				if( _currentPlayer != null )
 					API.NetworkSetInSpectatorMode( true, _currentPlayer.Character.Handle );
 			}
-		}
+		}*/
 
 		private CitizenFX.Core.Player _currentPlayer;
 
@@ -47,8 +47,7 @@ namespace PropHuntV.Client
 
 		private async Task OnTick() {
 			try {
-				if( !IsEnabled || (PropHunt.MapHandler.CurrentPlayer?.IsAlive ?? false) ) {
-					Log.Info( "[5] PropHunt.Spectate.IsEnabled = true" );
+				if( !IsEnabled || (PropHunt.MapHandler.CurrentPlayer?.IsAlive ?? false) ) { 
 					return;
 				}
 
