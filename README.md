@@ -3,6 +3,7 @@
 A standalone PropHunt gamemode for FiveM.
 
 Custom Sounds code: https://github.com/LondonStudios/PlayCustomSounds
+
 Original Code and Copyright Holder: https://github.com/MoosheTV/PropHuntV, this fork is just to implement some new features as well as bugfixes.
 
 ### How to Set-up
