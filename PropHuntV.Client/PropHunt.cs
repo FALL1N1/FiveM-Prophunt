@@ -187,7 +187,7 @@ namespace PropHuntV.Client
 
 						Log.Info( "Player's POS: X:" + pPlayer.Character.Position.X + ", Y:"+ pPlayer.Character.Position.X+", Z:"+ pPlayer.Character.Position.X+" used taunt [R]" );
 
-						BaseScript.TriggerServerEvent( "Server:SoundToCoords", pPlayer.Character.Position.X, pPlayer.Character.Position.Y, pPlayer.Character.Position.Z, 0.02f, "example.oga", 0.02f );
+						BaseScript.TriggerServerEvent( "Server:PlaySound", pPlayer.Character.Position.X, pPlayer.Character.Position.Y, pPlayer.Character.Position.Z, 0.02f, "example.oga", 0.02f );
 					
 						// work
 						//BaseScript.TriggerServerEvent( "Server:SoundToRadius", networkId, 3.0f, "example", 0.015f );
@@ -198,6 +198,7 @@ namespace PropHuntV.Client
 					if( MapHandler.IsPlaying() ) {
 						var killer = Client.Player.PlayerPed.GetKiller();
 						BaseScript.TriggerServerEvent( "PropHunt.Dead", killer != null ? Client.PlayersAvailable.FirstOrDefault( p => p.Character.Handle == killer.Handle )?.ServerId ?? -1 : -1 );
+						Log.Info( "[4] PropHunt.Spectate.IsEnabled = true" );
 						Spectate.IsEnabled = true;
 					}
 					ClearModel();

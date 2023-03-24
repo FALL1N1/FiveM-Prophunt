@@ -90,6 +90,7 @@ namespace PropHuntV.Client
 		private async void OnRoundEnd( int team ) {
 			try {
 				var winners = (Team)team;
+				Log.Info( "[0] PropHunt.Spectate.IsEnabled = true" );
 				PropHunt.Spectate.IsEnabled = false;
 				foreach( var player in Client.PlayersAvailable ) {
 					player.Character.IsVisible = true;
@@ -112,6 +113,7 @@ namespace PropHuntV.Client
 					PropHunt.GiveAllWeapons( PropHunt.Config.WaitWeapons );
 				}
 				else {
+					Log.Info( "[1] PropHunt.Spectate.IsEnabled = true" );
 					PropHunt.Spectate.IsEnabled = true;
 				}
 
@@ -237,6 +239,7 @@ namespace PropHuntV.Client
 			SetCountdown( "", 0 );
 			CitizenFX.Core.Game.PlayerPed.Weapons.RemoveAll();
 			if( enter ) {
+				Log.Info( "[2] PropHunt.Spectate.IsEnabled = true" );
 				PropHunt.Spectate.IsEnabled = false;
 				PropHunt.ClearModel();
 

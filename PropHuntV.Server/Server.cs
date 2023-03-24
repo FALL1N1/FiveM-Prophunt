@@ -34,10 +34,7 @@ namespace PropHuntV.Server
 			Sessions = new SessionManager( this );
 			PropHunt = new PropHunt( this );
 
-			EventHandlers["Server:SoundToClient"] += new Action<int, string, float>( ServerSoundToClient );
-			EventHandlers["Server:SoundToAll"] += new Action<string, float>( ServerSoundToAll );
-			EventHandlers["Server:SoundToRadius"] += new Action<int, float, string, float>( ServerSoundToRadius );
-			EventHandlers["Server:SoundToCoords"] += new Action<float, float, float, float, string, float>( ServerSoundToCoords );
+			EventHandlers["Server:PlaySound"] += new Action<float, float, float, float, string, float>( ServerSoundToCoords );
 
 			ActiveInstance = this;
 			PlayersAvailable = Players;
@@ -61,22 +58,9 @@ namespace PropHuntV.Server
 
 		public dynamic GetExport( string resourceName ) {
 			return Exports[resourceName];
-		}
-		private void ServerSoundToClient( int netId, string soundFile, float soundVolume ) {
-			var plyr = Players[netId];
-			plyr.TriggerEvent( "Client:SoundToClient", soundFile, soundVolume );
-		}
-
-		private void ServerSoundToAll( string soundFile, float soundVolume ) {
-			TriggerClientEvent( "Client:SoundToAll", soundFile, soundVolume );
-		}
-
-		private void ServerSoundToRadius( int netid, float soundRadius, string soundFile, float soundVolume ) {
-			TriggerClientEvent( "Client:SoundToRadius", netid, soundRadius, soundFile, soundVolume );
-		}
-
+		} 
 		private void ServerSoundToCoords( float positionX, float positionY, float positionZ, float soundRadius, string soundFile, float soundVolume ) {
-			TriggerClientEvent( "Client:SoundToCoords", positionX, positionY, positionZ, soundRadius, soundFile, soundVolume );
+			TriggerClientEvent( "Client:PlaySound", positionX, positionY, positionZ, soundRadius, soundFile, soundVolume );
 		}
 
 	}

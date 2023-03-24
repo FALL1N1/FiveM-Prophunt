@@ -68,6 +68,7 @@
     <Compile Include="MapHandler.cs" />
     <Compile Include="LobbyHandler.cs" />
     <Compile Include="SharedModels\GameDataModel.cs" />
+    <Compile Include="SharedModels\SoundModel.cs" />
     <Compile Include="SharedModels\MapModel.cs" />
     <Compile Include="SharedModels\NuiEventModel.cs" />
     <Compile Include="SharedModels\Weather.cs" />

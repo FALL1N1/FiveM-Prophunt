@@ -48,6 +48,7 @@ namespace PropHuntV.Client
 		private async Task OnTick() {
 			try {
 				if( !IsEnabled || (PropHunt.MapHandler.CurrentPlayer?.IsAlive ?? false) ) {
+					Log.Info( "[5] PropHunt.Spectate.IsEnabled = true" );
 					return;
 				}
 
