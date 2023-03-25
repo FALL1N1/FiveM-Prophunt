@@ -273,9 +273,14 @@ namespace PropHuntV.Client
 		}
 
 		public void ClearModel() {
-			_currentEntity?.Detach();
-			_currentEntity?.Delete();
-			_currentEntity = null;
+			return;
+			
+			if (_currentEntity.Exists())
+            {
+				if( _currentEntity.IsAttached() ) _currentEntity.Detach();
+				_currentEntity.Delete();
+			} 
+			//_currentEntity = null;
 			Client.Player.PlayerPed.IsVisible = true;
 		}
 

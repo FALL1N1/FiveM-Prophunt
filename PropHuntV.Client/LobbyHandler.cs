@@ -159,9 +159,10 @@ namespace PropHuntV.Client
 		}
 
 		internal async Task SetPedModel( PedHash hash ) {
+			// why???
+			//if( Client.Player.PlayerPed.Model.Hash == (int)hash ) return;
+
 			Log.Info( "MODEL: " + hash );
-			if( Client.Player.PlayerPed.Model.Hash == (int)hash )
-				return;
 			Log.Info( "OK MODEL -> : " + hash );
 			var model = new Model( hash );
 
