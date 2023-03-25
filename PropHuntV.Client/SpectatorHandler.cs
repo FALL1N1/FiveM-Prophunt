@@ -12,26 +12,30 @@ namespace PropHuntV.Client
 	{
 		protected PropHunt PropHunt { get; }
 
-		public bool IsEnabled = false;
-		/*{
+		public bool IsEnabled //= false;
+		{
 			get => _currentPlayer == null;
-			set {
-				Log.Info( $"Spectate mode set to {value}" );
-				if( !value ) {
-					_currentPlayer = null;
-					Client.Player.PlayerPed.Detach();
+			set { 
+				if( !value ) { 
+					if( Client?.Player != null ) 
+						if( Client.Player.PlayerPed.Exists() ) 
+							if (Client.Player.PlayerPed.IsAttached()) 
+								Client.Player.PlayerPed.Detach();  
+					else Log.Info( "[SPECTATE] Client not initialized yet @bug @todo !" );
 					Client.Player.PlayerPed.IsCollisionEnabled = true;
 					API.NetworkSetInSpectatorMode( false, Client.Player.PlayerPed.Handle );
 					API.NetworkSetOverrideSpectatorMode( false );
+					_currentPlayer = null;
 					return;
 				}
-
-				API.NetworkSetOverrideSpectatorMode( true );
-				_currentPlayer = GetNextPlayer();
-				if( _currentPlayer != null )
-					API.NetworkSetInSpectatorMode( true, _currentPlayer.Character.Handle );
+				else {
+					API.NetworkSetOverrideSpectatorMode( true );
+					_currentPlayer = GetNextPlayer();
+					if( _currentPlayer != null )
+						API.NetworkSetInSpectatorMode( true, _currentPlayer.Character.Handle );
+				}
 			}
-		}*/
+		}
 
 		private CitizenFX.Core.Player _currentPlayer;
 
@@ -89,9 +93,7 @@ namespace PropHuntV.Client
 				Client.Player.PlayerPed.Detach();
 				Client.Player.PlayerPed.AttachTo( player.Character, new Vector3( 0f, 0f, -10f ) );
 				Client.Player.PlayerPed.IsVisible = false;
-			}
-
-			Log.Info( $"Spectating {player?.Name ?? "Null"}" );
+			} 
 			return player;
 		}
 	}
