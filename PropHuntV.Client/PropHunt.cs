@@ -184,23 +184,19 @@ namespace PropHuntV.Client
 			try {
 				if( DrawCrosshair ) Screen.Hud.ShowComponentThisFrame( HudComponent.Reticle );
 
-				//if( MapHandler.CurrentPlayer?.Team == Team.Prop ) // We want only the props to taunt
-				//{
-				if( CitizenFX.Core.Game.IsControlJustReleased( 0, Control.Reload ) ) { // should be 45 (Control.Reload)
+				if( MapHandler.CurrentPlayer?.Team == Team.Prop ) { // We want only the props to taunt
+					if( CitizenFX.Core.Game.IsControlJustReleased( 0, Control.Reload ) ) { // should be 45 (Control.Reload)
 
 
 						TimeSpan t = (DateTime.UtcNow - new DateTime( 1970, 1, 1 ));
 						int cur_Time = (int)t.TotalSeconds;
 						int cd = ((lastused_Time + cooldown_Time) - cur_Time) * 1;
 
-						if( lastused_Time  + cooldown_Time < cur_Time ) 
-							{
+						if ( lastused_Time  + cooldown_Time < cur_Time ) {
 								var pPlayer = CitizenFX.Core.Game.Player;
-								int networkId = pPlayer.Character.NetworkId;
-								Log.Info( "Player " + networkId + " used taunt [R]" );
-									SoundModel sounds = new SoundModel();
+								int networkId = pPlayer.Character.NetworkId; 
+								SoundModel sounds = new SoundModel();
 								var random = new Random();
-
 
 								if( currentSoundLength == (int)SoundType.Short )
 									BaseScript.TriggerServerEvent( "chHyperSound:play", -1, sounds.ShortSounds[random.Next(sounds.ShortSounds.Count)], false, pPlayer.Character.Position, 30.0 );
@@ -209,17 +205,15 @@ namespace PropHuntV.Client
 								if( currentSoundLength == (int)SoundType.Long )
 									BaseScript.TriggerServerEvent( "chHyperSound:play", -1, sounds.LongSounds[random.Next(sounds.ShortSounds.Count)], false, pPlayer.Character.Position, 30.0 );
 
-
 								lastused_Time = cur_Time;
 								BaseScript.TriggerEvent( "UI.ShowNotification", "You have sent a taunt." );
 							}
 							else 
 							{
-							BaseScript.TriggerEvent( "UI.ShowNotification", "Your taunt is on cooldown, you need to wait for " + cd + " more seconds." );
-							Log.Info( "CD: " + cd);
+							BaseScript.TriggerEvent( "UI.ShowNotification", "Your taunt is on cooldown, you need to wait for " + cd + " more seconds." ); 
 							}
 						}
-				//}
+				}
 
 
 				if( CitizenFX.Core.Game.IsControlJustReleased( 0, Control.Enter ) ) // INPUT_ENTER -> F
