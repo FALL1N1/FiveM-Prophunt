@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.Threading.Tasks;
 using CitizenFX.Core;
-using CitizenFX.Core.Native;
 using Newtonsoft.Json;
 using PropHuntV.Client.Game;
 using PropHuntV.Client.Player;
 using PropHuntV.SharedModels;
-using PropHuntV.Util;
 using static CitizenFX.Core.Native.API;
 
 // ReSharper disable once ClassNeverInstantiated.Global
@@ -30,7 +28,7 @@ namespace PropHuntV.Client
 
 		public Client() {
 			if( ActiveInstance != null ) return; // Only instantiate once
-			 
+
 			Game = new GameController( this );
 			Player = new PlayerController( this );
 			World = new WorldController( this );
@@ -38,11 +36,11 @@ namespace PropHuntV.Client
 			Time = new TimeController( this );
 			Sessions = new SessionManager( this );
 			PropHunt = new PropHunt( this );
-			PlayersAvailable =  Players ; 
+			PlayersAvailable = Players;
 
-			ActiveInstance = this; 
+			ActiveInstance = this;
 		}
-		  
+
 
 		public void RegisterEventHandler( string eventName, Delegate action ) {
 			EventHandlers[eventName] += action;

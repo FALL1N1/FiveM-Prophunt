@@ -58,7 +58,7 @@ namespace PropHuntV.Server
 
 		public dynamic GetExport( string resourceName ) {
 			return Exports[resourceName];
-		} 
+		}
 		private void ServerSoundToCoords( float positionX, float positionY, float positionZ, float soundRadius, string soundFile, float soundVolume ) {
 			TriggerClientEvent( "Client:PlaySound", positionX, positionY, positionZ, soundRadius, soundFile, soundVolume );
 		}

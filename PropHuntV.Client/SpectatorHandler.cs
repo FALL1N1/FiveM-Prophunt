@@ -21,15 +21,15 @@ namespace PropHuntV.Client
 					Log.Info( "[SPECTATE] 1" );
 					if( Client?.Player != null ) {
 						Log.Info( "[SPECTATE] 2" );
-						if( CitizenFX.Core.Game.PlayerPed.Exists()) {
-							Log.Info( "[SPECTATE] 3" );  
+						if( CitizenFX.Core.Game.PlayerPed.Exists() ) {
+							Log.Info( "[SPECTATE] 3" );
 							CitizenFX.Core.Game.PlayerPed?.Detach();
 							CitizenFX.Core.Game.PlayerPed.IsCollisionEnabled = true;
 							API.NetworkSetInSpectatorMode( false, CitizenFX.Core.Game.PlayerPed.Handle );
-							Log.Info( "[SPECTATE] 4" ); 
-						} 
-					} 
-					else Log.Info( "[SPECTATE] Client not initialized yet @bug @todo !" ); 
+							Log.Info( "[SPECTATE] 4" );
+						}
+					}
+					else Log.Info( "[SPECTATE] Client not initialized yet @bug @todo !" );
 					API.NetworkSetOverrideSpectatorMode( false );
 					_currentPlayer = null;
 					return;
@@ -57,7 +57,7 @@ namespace PropHuntV.Client
 
 		private async Task OnTick() {
 			try {
-				if( !IsEnabled || (PropHunt.MapHandler.CurrentPlayer?.IsAlive ?? false) ) { 
+				if( !IsEnabled || (PropHunt.MapHandler.CurrentPlayer?.IsAlive ?? false) ) {
 					return;
 				}
 
@@ -99,7 +99,7 @@ namespace PropHuntV.Client
 				Client.Player.PlayerPed.Detach();
 				Client.Player.PlayerPed.AttachTo( player.Character, new Vector3( 0f, 0f, -10f ) );
 				Client.Player.PlayerPed.IsVisible = false;
-			} 
+			}
 			return player;
 		}
 	}

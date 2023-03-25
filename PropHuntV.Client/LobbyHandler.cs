@@ -195,7 +195,7 @@ namespace PropHuntV.Client
 
 				var pedHash = PedHash.JoeMinuteman;
 				pedHash = Enum.GetValues( typeof( PedHash ) ).OfType<PedHash>().FirstOrDefault( p => Enum.GetName( typeof( PedHash ), p )?.Equals( user.PedModel ) ?? false );
-				if(pedHash == 0 ) pedHash = PedHash.JoeMinuteman; // hash not found, set to default
+				if( pedHash == 0 ) pedHash = PedHash.JoeMinuteman; // hash not found, set to default
 
 				await SetPedModel( pedHash );
 			}

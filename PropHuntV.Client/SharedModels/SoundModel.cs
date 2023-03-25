@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using CitizenFX.Core;
 
 namespace PropHuntV.SharedModels
 {
@@ -14,7 +13,7 @@ namespace PropHuntV.SharedModels
 			"negative",
 			"boom_headshot",
 			"honk",
-			"what_is_wrong_with_you", 
+			"what_is_wrong_with_you",
 		};
 		public readonly List<string> MediumSounds = new List<string> {
 			"you_underestimate_the_power",
@@ -23,13 +22,13 @@ namespace PropHuntV.SharedModels
 			"this_is_sparta",
 			"snooping_as_usual",
 			"leeroy_jenkins",
-			"laundry_just_got_easier", 
+			"laundry_just_got_easier",
 		};
 		public readonly List<string> LongSounds = new List<string> {
 			"bad_boys",
 			"long_sound",
 			"aaah",
-			"papapapapapa", 
+			"papapapapapa",
 		};
 
 		public enum SoundReward
@@ -46,5 +45,5 @@ namespace PropHuntV.SharedModels
 			Long = 3
 		}
 	}
-	 
+
 }

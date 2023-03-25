@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using CitizenFX.Core;
 
 namespace PropHuntV.SharedModels
 {
