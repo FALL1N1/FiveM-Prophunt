@@ -90,7 +90,7 @@ namespace PropHuntV.Client
 		private async void OnRoundEnd( int team ) {
 			try {
 				var winners = (Team)team;
-				Log.Info( "[0] PropHunt.Spectate.IsEnabled = true" );
+				//Log.Info( "[0] PropHunt.Spectate.IsEnabled = true" );
 				PropHunt.Spectate.IsEnabled = false;
 				foreach( var player in Client.PlayersAvailable ) {
 					player.Character.IsVisible = true;
@@ -113,7 +113,7 @@ namespace PropHuntV.Client
 					PropHunt.GiveAllWeapons( PropHunt.Config.WaitWeapons );
 				}
 				else {
-					Log.Info( "[1] PropHunt.Spectate.IsEnabled = true" );
+					//Log.Info( "[1] PropHunt.Spectate.IsEnabled = true" );
 					PropHunt.Spectate.IsEnabled = true;
 				}
 
@@ -162,8 +162,8 @@ namespace PropHuntV.Client
 			// why???
 			//if( Client.Player.PlayerPed.Model.Hash == (int)hash ) return;
 
-			Log.Info( "MODEL: " + hash );
-			Log.Info( "OK MODEL -> : " + hash );
+			//Log.Info( "MODEL: " + hash );
+			//Log.Info( "OK MODEL -> : " + hash );
 			var model = new Model( hash );
 
 			// If the selected model is not found or fails (e.g corrupted conf)
@@ -193,9 +193,9 @@ namespace PropHuntV.Client
 				Client.TriggerNuiEvent( "Lobby.UserData", user );
 				Client.TriggerNuiEvent( "Lobby.Config", PropHunt.Config );
 
-				//var pedHash = Enum.GetValues( typeof( PedHash ) ).OfType<PedHash>().FirstOrDefault( p => Enum.GetName( typeof( PedHash ), p )?.Equals( user.PedModel ) ?? false );
-
 				var pedHash = PedHash.JoeMinuteman;
+				pedHash = Enum.GetValues( typeof( PedHash ) ).OfType<PedHash>().FirstOrDefault( p => Enum.GetName( typeof( PedHash ), p )?.Equals( user.PedModel ) ?? false );
+				if(pedHash == 0 ) pedHash = PedHash.JoeMinuteman; // hash not found, set to default
 
 				await SetPedModel( pedHash );
 			}

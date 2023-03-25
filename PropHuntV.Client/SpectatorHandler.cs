@@ -15,15 +15,21 @@ namespace PropHuntV.Client
 		public bool IsEnabled //= false;
 		{
 			get => _currentPlayer == null;
-			set { 
-				if( !value ) { 
-					if( Client?.Player != null ) 
-						if( Client.Player.PlayerPed.Exists() ) 
-							if (Client.Player.PlayerPed.IsAttached()) 
-								Client.Player.PlayerPed.Detach();  
-					else Log.Info( "[SPECTATE] Client not initialized yet @bug @todo !" );
-					Client.Player.PlayerPed.IsCollisionEnabled = true;
-					API.NetworkSetInSpectatorMode( false, Client.Player.PlayerPed.Handle );
+			set {
+				Log.Info( $"Spectate mode set to {value}" );
+				if( !value ) {
+					Log.Info( "[SPECTATE] 1" );
+					if( Client?.Player != null ) {
+						Log.Info( "[SPECTATE] 2" );
+						if( CitizenFX.Core.Game.PlayerPed.Exists()) {
+							Log.Info( "[SPECTATE] 3" );  
+							CitizenFX.Core.Game.PlayerPed?.Detach();
+							CitizenFX.Core.Game.PlayerPed.IsCollisionEnabled = true;
+							API.NetworkSetInSpectatorMode( false, CitizenFX.Core.Game.PlayerPed.Handle );
+							Log.Info( "[SPECTATE] 4" ); 
+						} 
+					} 
+					else Log.Info( "[SPECTATE] Client not initialized yet @bug @todo !" ); 
 					API.NetworkSetOverrideSpectatorMode( false );
 					_currentPlayer = null;
 					return;
