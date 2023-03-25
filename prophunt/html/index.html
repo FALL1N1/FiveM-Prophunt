@@ -11,13 +11,13 @@
         <script>
             var audioPlayer = null;
             window.addEventListener('message', function(event) {
-            console.log("EVENT REC");
-            console.log(event);
+            // console.log("EVENT REC");
+            // console.log(event);
                 if (event.data.submissionType == "sendSound") {
-                    console.log("EVENT sendSound");
+                    // console.log("EVENT sendSound");
 				
                   if (audioPlayer != null) {
-                    console.log("ERR_NO_PLAYER");
+                    // console.log("ERR_NO_PLAYER");
                     audioPlayer.pause();
                   }
 

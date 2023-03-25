@@ -48,7 +48,7 @@ $(document).ready(function() {
 				$('#playercount').removeClass("opaque");
 				return;
 			case "Lobby.Countdown":
-				console.log(item);
+				// console.log(item);
 				startCountdown(item["Message"], item["Seconds"]);
 				return;
 			case "Lobby.Config":
