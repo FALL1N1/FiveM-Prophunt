@@ -40,26 +40,9 @@ namespace PropHuntV.Client
 			PropHunt = new PropHunt( this );
 			PlayersAvailable =  Players ; 
 
-			ActiveInstance = this;
-			 
-			EventHandlers["Client:PlaySound"] += new Action<float, float, float, float, string, float>( SoundToCoords );
+			ActiveInstance = this; 
 		}
-		 
-		private void SoundToCoords( float positionX, float positionY, float positionZ, float soundRadius, string soundFile, float soundVolume ) {
-			Log.Info( "PlaySound :: " + positionX + "f, " + positionY + "f, " + positionZ + "f, " + soundRadius + "f, " + "Sound: " + soundFile + ", Vol: " + soundVolume);
-			Vector3 playerCoords = Player.Position; 
-			float compare = Vdist( playerCoords.X, playerCoords.Y, playerCoords.Z, positionX, positionY, positionZ );
-			float distanceVolumeMultiplier = (soundVolume / soundRadius);
-			float distanceVolume = soundVolume - (compare * distanceVolumeMultiplier);
-			Log.Info( "Compare: " + compare + ", Radius: " + soundRadius + ", distanceVolumeMultiplier: " + distanceVolumeMultiplier + ", distanceVolume: "+ distanceVolume);
-			if( compare <= soundRadius ) {
-				Log.Info( "OK, PLAYING!" );
-				SendNuiMessage( string.Format( "{{\"submissionType\":\"sendSound\", \"submissionVolume\":{0}, \"submissionFile\":\"{1}\"}}", (object)distanceVolume, (object)soundFile ) );
-			} else {
-				Log.Info( "NO, TOO FAR!" );
-				Log.Info( "[FALSE] Compare: " + compare + ", Radius: " + soundRadius + ", distanceVolumeMultiplier: " + distanceVolumeMultiplier + ", distanceVolume: " + distanceVolume );
-			}
-		}
+		  
 
 		public void RegisterEventHandler( string eventName, Delegate action ) {
 			EventHandlers[eventName] += action;

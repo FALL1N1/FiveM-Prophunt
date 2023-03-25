@@ -9,7 +9,8 @@ using Newtonsoft.Json;
 using PropHuntV.Client.Player;
 using PropHuntV.SharedModels;
 using PropHuntV.Util;
-using static PropHuntV.Client.LobbyHandler; 
+using static PropHuntV.Client.LobbyHandler;
+using static PropHuntV.SharedModels.SoundModel;
 
 namespace PropHuntV.Client
 {
@@ -24,6 +25,9 @@ namespace PropHuntV.Client
 		 
 		private int cooldown_Time = 30;
 		private int lastused_Time = 0;
+
+		private int currentSoundLength = (int)SoundType.Short;
+		private bool soundLengthChangedInThisTick = false;
 
 		private static Dictionary<string, int> ModelSelectors = new Dictionary<string, int> {
 			["_chr"] = 60,
@@ -178,31 +182,66 @@ namespace PropHuntV.Client
 
 		private async Task OnTick() {
 			try {
-				if( DrawCrosshair )
-					Screen.Hud.ShowComponentThisFrame( HudComponent.Reticle );
+				if( DrawCrosshair ) Screen.Hud.ShowComponentThisFrame( HudComponent.Reticle );
 
 				//if( MapHandler.CurrentPlayer?.Team == Team.Prop ) // We want only the props to taunt
 				//{
-					if( CitizenFX.Core.Game.IsControlJustReleased( 0, Control.Reload ) ) { // should be 45 (Control.Reload)
+				if( CitizenFX.Core.Game.IsControlJustReleased( 0, Control.Reload ) ) { // should be 45 (Control.Reload)
 
 
-					TimeSpan t = (DateTime.UtcNow - new DateTime( 1970, 1, 1 ));
-					int cur_Time = (int)t.TotalSeconds;
+						TimeSpan t = (DateTime.UtcNow - new DateTime( 1970, 1, 1 ));
+						int cur_Time = (int)t.TotalSeconds;
+						int cd = ((lastused_Time + cooldown_Time) - cur_Time) * 1;
 
-					if( lastused_Time  + cooldown_Time < cur_Time ) 
-						{
-							var pPlayer = CitizenFX.Core.Game.Player;
-							int networkId = pPlayer.Character.NetworkId;
-							Log.Info( "Player " + networkId + " used taunt [R]" );
-							BaseScript.TriggerServerEvent( "chHyperSound:play", -1, "aaah", false, pPlayer.Character.Position, 30.0 );
-							lastused_Time = cur_Time;
+						if( lastused_Time  + cooldown_Time < cur_Time ) 
+							{
+								var pPlayer = CitizenFX.Core.Game.Player;
+								int networkId = pPlayer.Character.NetworkId;
+								Log.Info( "Player " + networkId + " used taunt [R]" );
+									SoundModel sounds = new SoundModel();
+								var random = new Random();
+
+
+								if( currentSoundLength == (int)SoundType.Short )
+									BaseScript.TriggerServerEvent( "chHyperSound:play", -1, sounds.ShortSounds[random.Next(sounds.ShortSounds.Count)], false, pPlayer.Character.Position, 30.0 );
+								if( currentSoundLength == (int)SoundType.Medium )
+									BaseScript.TriggerServerEvent( "chHyperSound:play", -1, sounds.MediumSounds[random.Next(sounds.ShortSounds.Count)], false, pPlayer.Character.Position, 30.0 );
+								if( currentSoundLength == (int)SoundType.Long )
+									BaseScript.TriggerServerEvent( "chHyperSound:play", -1, sounds.LongSounds[random.Next(sounds.ShortSounds.Count)], false, pPlayer.Character.Position, 30.0 );
+
+
+								lastused_Time = cur_Time;
+								BaseScript.TriggerEvent( "UI.ShowNotification", "You have sent a taunt." );
+							}
+							else 
+							{
+							BaseScript.TriggerEvent( "UI.ShowNotification", "Your taunt is on cooldown, you need to wait for " + cd + " more seconds." );
+							Log.Info( "CD: " + cd);
+							}
 						}
-						else 
-						{
-						Log.Info( "CD: " + ((lastused_Time + cooldown_Time) - cur_Time) * 1 );
-						}
-					}
 				//}
+
+
+				if( CitizenFX.Core.Game.IsControlJustReleased( 0, Control.Enter ) ) // INPUT_ENTER -> F
+				{
+
+					if (currentSoundLength == (int)SoundType.Short && !soundLengthChangedInThisTick ) {
+						currentSoundLength = (int)SoundType.Medium;
+						BaseScript.TriggerEvent( "UI.ShowNotification", "Your taunt level is now Medium." );
+						soundLengthChangedInThisTick = true;
+					} 
+					if (currentSoundLength == (int)SoundType.Medium && !soundLengthChangedInThisTick ) {
+						currentSoundLength = (int)SoundType.Long;
+						BaseScript.TriggerEvent( "UI.ShowNotification", "Your taunt level is now Long." );
+						soundLengthChangedInThisTick = true;
+					} 
+					if (currentSoundLength == (int)SoundType.Long && !soundLengthChangedInThisTick ) {
+						currentSoundLength = (int)SoundType.Short;
+						BaseScript.TriggerEvent( "UI.ShowNotification", "Your taunt level is now Short." );
+						soundLengthChangedInThisTick = true;
+					}
+					soundLengthChangedInThisTick = false; // reset back
+				}
 
 				if( Client.Player.PlayerPed.IsDead || Client.Player.PlayerPed.Health <= 0 ) {
 					if( MapHandler.IsPlaying() ) {
@@ -281,7 +320,8 @@ namespace PropHuntV.Client
 				_currentEntity.Delete();
 			} 
 			//_currentEntity = null;
-			Client.Player.PlayerPed.IsVisible = true;
+			if( Client.Player.PlayerPed.Exists() )
+				Client.Player.PlayerPed.IsVisible = true;
 		}
 
 		private async Task EntitySelectTick() {
