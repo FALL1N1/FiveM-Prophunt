@@ -182,7 +182,7 @@ namespace PropHuntV.Client
 			try {
 				if( DrawCrosshair ) Screen.Hud.ShowComponentThisFrame( HudComponent.Reticle );
 
-				if( MapHandler.CurrentPlayer?.Team == Team.Prop ) { // We want only the props to taunt
+				//if( MapHandler.CurrentPlayer?.Team == Team.Prop ) { // We want only the props to taunt
 					if( CitizenFX.Core.Game.IsControlJustReleased( 0, Control.Reload ) ) { // should be 45 (Control.Reload)
 
 
@@ -210,7 +210,7 @@ namespace PropHuntV.Client
 							BaseScript.TriggerEvent( "UI.ShowNotification", "Your taunt is on cooldown, you need to wait for " + cd + " more seconds." );
 						}
 					}
-				}
+				//}
 
 
 				if( CitizenFX.Core.Game.IsControlJustReleased( 0, Control.Enter ) ) // INPUT_ENTER -> F
@@ -218,17 +218,17 @@ namespace PropHuntV.Client
 
 					if( currentSoundLength == (int)SoundType.Short && !soundLengthChangedInThisTick ) {
 						currentSoundLength = (int)SoundType.Medium;
-						BaseScript.TriggerEvent( "UI.ShowNotification", "Your taunt level is now Medium." );
+						BaseScript.TriggerEvent( "UI.ShowNotification", "Your taunt level is now Medium. (Medium Reward)" );
 						soundLengthChangedInThisTick = true;
 					}
 					if( currentSoundLength == (int)SoundType.Medium && !soundLengthChangedInThisTick ) {
 						currentSoundLength = (int)SoundType.Long;
-						BaseScript.TriggerEvent( "UI.ShowNotification", "Your taunt level is now Long." );
+						BaseScript.TriggerEvent( "UI.ShowNotification", "Your taunt level is now Long. (High Reward)" );
 						soundLengthChangedInThisTick = true;
 					}
 					if( currentSoundLength == (int)SoundType.Long && !soundLengthChangedInThisTick ) {
 						currentSoundLength = (int)SoundType.Short;
-						BaseScript.TriggerEvent( "UI.ShowNotification", "Your taunt level is now Short." );
+						BaseScript.TriggerEvent( "UI.ShowNotification", "Your taunt level is now Short. (Small Reward)" );
 						soundLengthChangedInThisTick = true;
 					}
 					soundLengthChangedInThisTick = false; // reset back
