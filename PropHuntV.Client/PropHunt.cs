@@ -303,15 +303,17 @@ namespace PropHuntV.Client
 		}
 
 		public void ClearModel() {
-			return;
 
-			if( _currentEntity.Exists() ) {
+			if( CitizenFX.Core.Game.PlayerPed.Exists() ) {
+				CitizenFX.Core.Game.PlayerPed.IsVisible = true;
+				CitizenFX.Core.Game.PlayerPed?.Detach();
+			}
+
+			if( _currentEntity != null) {
 				if( _currentEntity.IsAttached() ) _currentEntity.Detach();
 				_currentEntity.Delete();
-			}
-			//_currentEntity = null;
-			if( Client.Player.PlayerPed.Exists() )
-				Client.Player.PlayerPed.IsVisible = true;
+				_currentEntity = null;
+			} 
 		}
 
 		private async Task EntitySelectTick() {

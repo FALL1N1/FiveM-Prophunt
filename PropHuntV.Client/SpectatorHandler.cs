@@ -23,7 +23,7 @@ namespace PropHuntV.Client
 							CitizenFX.Core.Game.PlayerPed.IsCollisionEnabled = true;
 							API.NetworkSetInSpectatorMode( false, CitizenFX.Core.Game.PlayerPed.Handle ); 
 						}
-					} 
+					}	
 					API.NetworkSetOverrideSpectatorMode( false );
 					_currentPlayer = null;
 					return;
