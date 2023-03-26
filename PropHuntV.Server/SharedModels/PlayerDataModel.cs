@@ -11,6 +11,7 @@
 	{
 		public int NetId { get; set; }
 		public Team Team { get; set; }
+		public Team PreviousTeam { get; set; } = Team.None;
 		public int Kills { get; set; }
 		public int SurvivalTime { get; set; }
 		public bool IsAlive { get; set; }

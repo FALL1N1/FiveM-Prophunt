@@ -125,6 +125,17 @@ namespace PropHuntV.Server
 							Team = playerCount++ * ratio % 1 <= 0 ? Team.Hunter : Team.Prop
 						} ).ToList();
 
+					if( playerCount < 6 ) {
+						players = ReadyPlayers.Where( s => Server.Sessions.FromPlayer( s ) != null )
+						.OrderBy( p => Random.Next( -1, 1 ) )
+						.Select( s => new PlayerDataModel {
+							NetId = s,
+							IsAlive = true,
+							Team = players[s].PreviousTeam == Team.None ? (playerCount++ * ratio % 1 <= 0 ? Team.Hunter : Team.Prop) : (players[s].PreviousTeam == Team.Prop ? Team.Hunter : Team.Prop),
+							PreviousTeam = players[s].Team,
+						} ).ToList();
+					}
+
 					if( playerCount < Config.MinPlayers ) {
 						GameState.GameEndsAt = DateTime.UtcNow.AddSeconds( Config.WaitTime );
 						var min = Config.MinPlayers - playerCount;
@@ -195,6 +206,7 @@ namespace PropHuntV.Server
 					session.User.Data.Points += amount;
 					points += amount;
 					playerCount++;
+					player.PreviousTeam = player.Team;
 					await session.SaveData();
 					session.TriggerEvent( "PropHunt.UserData", JsonConvert.SerializeObject( session.User.Data ) );
 					session.TriggerEvent( "UI.ShowNotification", $"Your team {(winningTeam == player.Team ? "~g~Won" : "~r~Lost")}~s~! You've earned ~y~{amount:n0} points~s~." );
