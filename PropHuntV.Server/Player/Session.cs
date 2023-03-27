@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
 using Newtonsoft.Json;
+using PropHuntV.SharedModels;
 using PropHuntV.SharedModels.Data;
 using PropHuntV.Util;
 
@@ -55,6 +56,7 @@ namespace PropHuntV.Server.Player
 
 		public string UserFilePath => $"{API.GetResourcePath( API.GetCurrentResourceName() )}/data/players/{SteamIdentifier}.json";
 
+		public Team PreviousTeam { get; internal set; }
 		/// <summary>
 		/// The UTC timestamp of when this session was created.
 		/// </summary>

@@ -8,5 +8,6 @@ namespace PropHuntV.SharedModels.Data
 		public uint Points { get; set; }
 		public string PedModel { get; set; }
 		public List<string> Unlockables { get; set; } = new List<string>();
+		public Team PreviousTeam { get; set; } = Team.None;
 	}
 }
