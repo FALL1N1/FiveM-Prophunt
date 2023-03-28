@@ -18,16 +18,6 @@ namespace PropHuntV.Server.Player
 		public CitizenFX.Core.Player Player { get; protected internal set; }
 
 		/// <summary>
-		/// The HEX value of the Steam Identifier, or String.Empty if no steam identifier.
-		/// </summary>
-		public string SteamIdentifier { get; }
-
-		/// <summary>
-		/// The 64-bit identifier of the player, or 0 if no steam identifier.
-		/// </summary>
-		public ulong SteamId64 { get; }
-
-		/// <summary>
 		/// The license ID associated with their copy of Grand Theft Auto.
 		/// </summary>
 		public string LicenseId { get; }
@@ -54,7 +44,7 @@ namespace PropHuntV.Server.Player
 
 		public UserModel User { get; set; }
 
-		public string UserFilePath => $"{API.GetResourcePath( API.GetCurrentResourceName() )}/data/players/{SteamIdentifier}.json";
+		public string UserFilePath => $"{API.GetResourcePath( API.GetCurrentResourceName() )}/data/players/{LicenseId}.json";
 
 		public Team PreviousTeam { get; internal set; }
 		/// <summary>
@@ -66,10 +56,7 @@ namespace PropHuntV.Server.Player
 		protected internal Dictionary<string, object> ProtectedData = new Dictionary<string, object>();
 
 		public Session( CitizenFX.Core.Player player, Dictionary<string, object> sharedData = null, Dictionary<string, object> protectedData = null ) {
-			Player = player;
-			var hasSteam = player.Identifiers.Any( p => p.StartsWith( "steam:" ) );
-			SteamIdentifier = hasSteam ? player.Identifiers["steam"].Replace( "steam:", "" ) : "";
-			SteamId64 = hasSteam ? Convert.ToUInt64( SteamIdentifier, 16 ) : 0;
+			Player = player; 
 
 			LicenseId = player.Identifiers["license"].Replace( "license:", "" );
 
@@ -98,8 +85,7 @@ namespace PropHuntV.Server.Player
 						DateCreated = DateTime.UtcNow,
 						GtaLicense = LicenseId,
 						LastLogin = DateTime.UtcNow,
-						DisplayName = Name,
-						SteamId = SteamIdentifier,
+						DisplayName = Name, 
 						Data = new UserDataModel {
 							PedModel = Server.ActiveInstance.PropHunt.Config.DefaultPedModel,
 							Experience = 0,

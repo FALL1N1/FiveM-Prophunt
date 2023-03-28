@@ -319,7 +319,7 @@ namespace PropHuntV.Server
 					return;
 				}
 
-				Log.Info( $"Loaded player data from SteamID {session.SteamIdentifier}." );
+				Log.Info( $"Loaded player data from SteamID {session.LicenseId}." );
 
 				session.TriggerEvent( "PropHunt.Config", JsonConvert.SerializeObject( Config ) );
 				session.TriggerEvent( "PropHunt.UserData", JsonConvert.SerializeObject( session.User.Data ) );

@@ -100,10 +100,6 @@ namespace PropHuntV.Server.Player
 			try {
 				var session = new Session( player );
 				Log.Info( $"Player {player.Name} ({string.Join( ", ", player.Identifiers )}) is attempting to connect to the server." );
-				if( Server.IsSteamRequired && session.SteamId64 == 0 ) {
-					player.Drop( "Steam is required to play on this server." );
-					return;
-				}
 
 				_sessions.Add( session );
 
