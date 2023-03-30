@@ -17,17 +17,21 @@ namespace PropHuntV.Server
 		private List<MapModel> _mapRotation = new List<MapModel>();
 
 		public ServerConfigModel Config { get; private set; }
+		public LocaleModel Locale { get; private set; }
 		public GameDataModel GameState { get; private set; }
 
 		public HashSet<int> ReadyPlayers { get; } = new HashSet<int>();
 
 		protected internal PropHunt( Server server ) : base( server ) {
-			Log.Info( "Loading Configuration file" );
-
 			if( !LoadConfig() ) {
 				API.StopResource( API.GetCurrentResourceName() );
 				return;
-			}
+			} else Log.Info( "Configuration File loaded!" );
+
+			if( !LoadLocales() ) 
+				Log.Error( "Localization file IS MISSING, using default localization: English" ); 
+			else 
+				Log.Info( "Localization File loaded!" );
 
 			Server.RegisterEventHandler( "Session.Loaded", new Action<int>( OnSessionLoad ) );
 			Server.RegisterEventHandler( "Player.DropMe", new Action<CitizenFX.Core.Player, string>( OnDropRequest ) );
@@ -298,6 +302,19 @@ namespace PropHuntV.Server
 			}
 			return Config != null;
 		}
+		
+		private bool LoadLocales() {
+			try {
+				var file = API.LoadResourceFile( API.GetCurrentResourceName(), "locale.json" );
+				Locale = JsonConvert.DeserializeObject<LocaleModel>( file );
+				BaseScript.TriggerClientEvent( "PropHunt.Localization", JsonConvert.SerializeObject( Locale ) );
+			}
+			catch( Exception ) {
+				Log.Error( $"Could not read resources/{API.GetCurrentResourceName()}/locale.json -- Make sure the syntax is valid JSON." );
+				return false;
+			}
+			return Locale != null;
+		}
 
 		private void OnDropRequest( [FromSource] CitizenFX.Core.Player source, string reason ) {
 			try {
@@ -322,6 +339,7 @@ namespace PropHuntV.Server
 				Log.Info( $"Loaded player data from SteamID {session.LicenseId}." );
 
 				session.TriggerEvent( "PropHunt.Config", JsonConvert.SerializeObject( Config ) );
+				session.TriggerEvent( "PropHunt.Localization", JsonConvert.SerializeObject( Locale ) );
 				session.TriggerEvent( "PropHunt.UserData", JsonConvert.SerializeObject( session.User.Data ) );
 
 				session.TriggerEvent( "PropHunt.GameState", JsonConvert.SerializeObject( new GameDataModel( GameState ) {

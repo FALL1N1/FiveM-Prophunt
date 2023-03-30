@@ -83,6 +83,7 @@
     <Compile Include="SharedModels\CharacterModel.cs" />
     <Compile Include="SharedModels\Data\UserDataModel.cs" />
     <Compile Include="SharedModels\PlayerDataModel.cs" />
+    <Compile Include="SharedModels\LocaleModel.cs" />
     <Compile Include="SharedModels\ServerConfigModel.cs" />
     <Compile Include="SharedModels\SessionDataModel.cs" />
     <Compile Include="SharedModels\Data\UserModel.cs" />

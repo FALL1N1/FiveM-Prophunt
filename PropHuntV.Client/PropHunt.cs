@@ -74,6 +74,7 @@ namespace PropHuntV.Client
 		private Vector3 _lastPosition;
 
 		internal ServerConfigModel Config { get; private set; }
+		internal LocaleModel Localization { get; private set; }
 
 		public bool DrawCrosshair { get; set; }
 
@@ -86,6 +87,7 @@ namespace PropHuntV.Client
 			Spectate = new SpectatorHandler( this, client );
 
 			Client.RegisterEventHandler( "PropHunt.Config", new Action<string>( OnConfig ) );
+			Client.RegisterEventHandler( "PropHunt.Localization", new Action<string>( OnLocalizationLoaded ) );
 			Client.RegisterEventHandler( "PropHunt.Prop", new Action<int, int, uint>( OnPropUpdate ) );
 			Client.RegisterEventHandler( "PropHunt.Sound", new Action<string>( PlaySound ) );
 			Client.RegisterEventHandler( "UI.ShowNotification", new Action<string>( UiHelper.ShowNotification ) );
@@ -171,7 +173,20 @@ namespace PropHuntV.Client
 
 		private void OnConfig( string data ) {
 			try {
+				Log.Info( "OnConfig" );
 				Config = JsonConvert.DeserializeObject<ServerConfigModel>( data );
+				Log.Info( Config.MinPlayers.ToString() ); 
+			}
+			catch( Exception ex ) {
+				Log.Error( ex );
+			}
+		}
+		private void OnLocalizationLoaded( string data ) {
+			try {
+				Log.Info( "OnLocalizationLoaded" );
+				Localization = JsonConvert.DeserializeObject<LocaleModel>( data );
+				Log.Info( Localization.LANG_SUC_TAUNT_SENT );
+				Log.Info( Localization.LANG_ERR_TAUNT_CD );
 			}
 			catch( Exception ex ) {
 				Log.Error( ex );
@@ -204,10 +219,10 @@ namespace PropHuntV.Client
 								BaseScript.TriggerServerEvent( "chHyperSound:play", -1, sounds.LongSounds[random.Next( sounds.ShortSounds.Count )], false, pPlayer.Character.Position, 30.0 );
 
 							lastused_Time = cur_Time;
-							BaseScript.TriggerEvent( "UI.ShowNotification", "You have sent a taunt." );
+							BaseScript.TriggerEvent( "UI.ShowNotification", Localization.LANG_SUC_TAUNT_SENT );
 						}
 						else {
-							BaseScript.TriggerEvent( "UI.ShowNotification", "Your taunt is on cooldown, you need to wait for " + cd + " more seconds." );
+							BaseScript.TriggerEvent( "UI.ShowNotification", Localization.LANG_ERR_TAUNT_CD ); // @todo: add variable support
 						}
 					}
 				//}
